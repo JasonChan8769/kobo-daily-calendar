@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<title>Kobo daily calendar - simple 1264x1680</title>
+<style>
+/* Colours are tuned for the Kaleido colour e-ink panel, not for a monitor:
+   saturated red/blue read best there; green and dark brick look muddy. */
+:root{
+  --paper:#ffffff;
+  --red:#e4261b;
+  --blue:#2540a8;
+  --ink:#1c2f8a;
+  --W:1264px; --H:1680px;
+}
+/* CI downloads Noto Serif HK into fonts/; on a PC the installed font is used as a fallback. */
+@font-face{font-family:'NSHK';src:url('fonts/NotoSerifHK.ttf') format('truetype');font-weight:100 900}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:var(--W);height:var(--H);background:var(--paper);overflow:hidden}
+body{font-family:'NSHK','Noto Serif HK','Noto Serif TC','PMingLiU','MingLiU',serif;color:var(--ink)}
+#canvas{position:relative;width:var(--W);height:var(--H)}
+
+/* ---------- frame ---------- */
+.frame{position:absolute;inset:22px;border:4px solid var(--blue)}
+.frame::after{content:"";position:absolute;inset:8px;border:2px solid var(--blue)}
+.corner{position:absolute;width:60px;height:60px}
+.corner.tl{left:12px;top:12px}.corner.tr{right:12px;top:12px}
+.corner.bl{left:12px;bottom:12px}.corner.br{right:12px;bottom:12px}
+
+/* ---------- page grid ---------- */
+.page{position:absolute;left:78px;right:78px;top:72px;bottom:72px;
+  display:grid;grid-template-rows:112px 668px 236px 252px 210px;row-gap:14px}
+
+/* ---------- header ---------- */
+.header{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  border-bottom:7px double var(--blue);padding-bottom:34px}
+.h-l,.h-r{display:flex;align-items:center;gap:14px;font-size:70px;font-weight:800;color:var(--blue);line-height:1}
+.h-r{justify-self:end}
+.h-c{font-size:100px;font-weight:800;color:var(--red);line-height:1;padding:0 20px}
+.paw{width:46px;height:46px}
+.flower{position:absolute;left:50%;bottom:-24px;transform:translateX(-50%)}
+
+/* ---------- middle stage ---------- */
+.mid{position:relative}
+.side{position:absolute;top:14px;width:196px;display:flex;flex-direction:column;align-items:center}
+.side.l{left:0}.side.r{right:0}
+.badge{width:112px;height:112px;display:grid;place-items:center;color:#fff;font-size:80px;font-weight:800;line-height:1}
+.badge.yi{background:var(--red)}.badge.ji{background:var(--blue)}
+.vt{display:flex;flex-direction:row-reverse;gap:16px;margin-top:24px}
+.vt span{writing-mode:vertical-rl;text-orientation:upright;white-space:nowrap;
+  font-size:56px;font-weight:700;letter-spacing:.12em;color:var(--ink);line-height:1.12}
+.numeral{position:absolute;left:170px;right:210px;top:6px;text-align:center;
+  font-size:640px;font-weight:900;color:var(--red);line-height:1;letter-spacing:-.06em}
+.numeral.one{font-size:760px;letter-spacing:0}
+.deco{position:absolute}
+.mascot{position:absolute;left:176px;bottom:-6px;width:300px}
+.mascot img{width:100%;display:block}
+
+/* ---------- weekday ---------- */
+.week{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.daytype{font-size:48px;font-weight:800;color:var(--red);letter-spacing:.3em;padding-left:.3em;line-height:1}
+.weekday{font-size:124px;font-weight:800;color:var(--ink);letter-spacing:.06em;line-height:1.05;margin-top:6px}
+.lunar{font-size:46px;font-weight:700;color:var(--ink);letter-spacing:.34em;padding-left:.34em;margin-top:6px;line-height:1.1}
+
+/* ---------- forecast box ---------- */
+.boxA{border:5px solid var(--red);border-radius:22px;display:grid;grid-template-columns:220px repeat(4,1fr);
+  align-items:center;padding:0 12px}
+.moon{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:36px;font-weight:700;color:var(--ink);
+  border-right:3px dotted var(--red);height:78%;justify-content:center;margin-right:8px}
+.fc{display:flex;flex-direction:column;align-items:center;gap:6px}
+.fc .d{font-size:40px;font-weight:800;color:var(--ink);line-height:1.1}
+.fc.today .d{color:var(--red)}
+.fc .t{font-size:36px;font-weight:600;color:var(--ink);white-space:nowrap;line-height:1.1}
+.fc svg{width:92px;height:92px}
+
+/* ---------- today box ---------- */
+.boxB{position:relative;border:5px solid var(--blue);border-radius:22px;display:grid;
+  grid-template-columns:auto 1fr 190px;align-items:center;column-gap:22px;padding:0 26px;overflow:hidden}
+.tempwrap{display:flex;align-items:center;gap:10px}
+.tempwrap svg{width:112px;height:112px}
+.temp{font-size:92px;font-weight:800;color:var(--red);line-height:1}
+.wxText{font-size:40px;font-weight:600;color:var(--ink);line-height:1.4;white-space:pre-line}
+.art{align-self:end;margin-bottom:-4px}
+.stamp{position:absolute;right:22px;top:16px;background:var(--red);color:#fff;font-size:34px;font-weight:800;
+  writing-mode:vertical-rl;text-orientation:upright;padding:10px 7px;letter-spacing:.1em;line-height:1.1}
+</style>
+</head>
+<body>
+<!-- icon symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-sun" viewBox="0 0 100 100"><circle cx="50" cy="50" r="19" fill="#e4261b"/>
+    <path d="M50 12v12M50 76v12M12 50h12M76 50h12M23 23l8 8M69 69l8 8M77 23l-8 8M31 69l-8 8" stroke="#e4261b" stroke-width="6" stroke-linecap="round"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 100 100"><path d="M26 74H72A16 16 0 0 0 74 42A22 22 0 0 0 32 38A18 18 0 0 0 26 74Z" fill="#fff" stroke="#2540a8" stroke-width="6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-partly" viewBox="0 0 100 100"><circle cx="36" cy="36" r="15" fill="#e4261b"/>
+    <path d="M36 8v8M8 36h8M16 16l6 6M56 16l-6 6M16 56l6-6" stroke="#e4261b" stroke-width="6" stroke-linecap="round"/>
+    <path transform="translate(14 16) scale(.84)" d="M26 74H72A16 16 0 0 0 74 42A22 22 0 0 0 32 38A18 18 0 0 0 26 74Z" fill="#fff" stroke="#2540a8" stroke-width="7" stroke-linejoin="round"/></symbol>
+  <symbol id="i-rain" viewBox="0 0 100 100">
+    <path transform="translate(4 -8) scale(.9)" d="M26 74H72A16 16 0 0 0 74 42A22 22 0 0 0 32 38A18 18 0 0 0 26 74Z" fill="#fff" stroke="#2540a8" stroke-width="6.5" stroke-linejoin="round"/>
+    <path d="M34 78l-5 14M52 78l-5 14M70 78l-5 14" stroke="#2540a8" stroke-width="6" stroke-linecap="round"/></symbol>
+  <symbol id="i-thunder" viewBox="0 0 100 100">
+    <path transform="translate(4 -8) scale(.9)" d="M26 74H72A16 16 0 0 0 74 42A22 22 0 0 0 32 38A18 18 0 0 0 26 74Z" fill="#fff" stroke="#2540a8" stroke-width="6.5" stroke-linejoin="round"/>
+    <polygon points="54,62 38,86 50,86 44,100 68,74 55,74 62,62" fill="#e4261b"/></symbol>
+</defs></svg>
+
+<div id="canvas">
+  <div class="frame"></div>
+  <svg class="corner tl" viewBox="0 0 60 60"><rect x="4" y="4" width="52" height="52" fill="#fff" stroke="#e4261b" stroke-width="5"/><rect x="16" y="16" width="28" height="28" fill="none" stroke="#2540a8" stroke-width="4"/><circle cx="30" cy="30" r="6" fill="#e4261b"/></svg>
+  <svg class="corner tr" viewBox="0 0 60 60"><rect x="4" y="4" width="52" height="52" fill="#fff" stroke="#e4261b" stroke-width="5"/><rect x="16" y="16" width="28" height="28" fill="none" stroke="#2540a8" stroke-width="4"/><circle cx="30" cy="30" r="6" fill="#e4261b"/></svg>
+  <svg class="corner bl" viewBox="0 0 60 60"><rect x="4" y="4" width="52" height="52" fill="#fff" stroke="#e4261b" stroke-width="5"/><rect x="16" y="16" width="28" height="28" fill="none" stroke="#2540a8" stroke-width="4"/><circle cx="30" cy="30" r="6" fill="#e4261b"/></svg>
+  <svg class="corner br" viewBox="0 0 60 60"><rect x="4" y="4" width="52" height="52" fill="#fff" stroke="#e4261b" stroke-width="5"/><rect x="16" y="16" width="28" height="28" fill="none" stroke="#2540a8" stroke-width="4"/><circle cx="30" cy="30" r="6" fill="#e4261b"/></svg>
+
+  <div class="page">
+    <!-- header -->
+    <div class="header">
+      <div class="h-l">
+        <svg class="paw" viewBox="0 0 40 40" fill="#2540a8"><ellipse cx="20" cy="27" rx="10" ry="8"/><circle cx="8" cy="17" r="4.6"/><circle cx="16.5" cy="10" r="4.8"/><circle cx="25.5" cy="10" r="4.8"/><circle cx="33" cy="17" r="4.6"/></svg>
+        <span id="monthCN"></span>
+      </div>
+      <div class="h-c" id="year"></div>
+      <div class="h-r"><span id="ganzhi"></span>
+        <svg class="paw" viewBox="0 0 40 40" fill="#2540a8"><ellipse cx="20" cy="27" rx="10" ry="8"/><circle cx="8" cy="17" r="4.6"/><circle cx="16.5" cy="10" r="4.8"/><circle cx="25.5" cy="10" r="4.8"/><circle cx="33" cy="17" r="4.6"/></svg>
+      </div>
+      <svg class="flower" width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="23" fill="#fff"/>
+        <g fill="#e4261b"><circle cx="24" cy="11" r="7"/><circle cx="36.4" cy="20" r="7"/><circle cx="31.7" cy="34.5" r="7"/><circle cx="16.3" cy="34.5" r="7"/><circle cx="11.6" cy="20" r="7"/></g>
+        <circle cx="24" cy="24" r="6" fill="#fff" stroke="#2540a8" stroke-width="3"/></svg>
+    </div>
+
+    <!-- stage -->
+    <div class="mid">
+      <div class="side l"><div class="badge yi">宜</div><div class="vt" id="yi"></div></div>
+      <div class="side r"><div class="badge ji">忌</div><div class="vt" id="ji"></div></div>
+      <div class="numeral" id="day"></div>
+
+      <!-- cloud + dotted sun + birds -->
+      <svg class="deco" style="right:196px;top:4px" width="250" height="96" viewBox="0 0 250 96" fill="none" stroke="#2540a8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="196" cy="46" r="30" stroke="#e4261b" stroke-width="10" stroke-dasharray="2 10"/>
+        <path transform="translate(0 -30)" d="M20 120q-14-4-10-20q4-14 20-10q6-16 24-12q14-12 30 0q22-4 28 16q16 2 14 16q-2 10-16 10z" fill="#fff"/>
+        <path d="M124 22q6-8 12 0q6-8 12 0M150 8q5-7 10 0q5-7 10 0" />
+      </svg>
+
+      <!-- mascot: PLACEHOLDER vector cat; replaced by assets/*.png from Gemini -->
+      <div class="mascot" id="mascot">
+        <svg viewBox="0 0 300 380" fill="none" stroke="#3a2a20" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M222 330 q70 0 56-80 q-6-30 -34-30" stroke="#3a2a20" stroke-width="30"/>
+          <path d="M222 330 q70 0 56-80 q-6-30 -34-30" stroke="#f0a43c" stroke-width="22"/>
+          <ellipse cx="150" cy="272" rx="82" ry="92" fill="#f0a43c"/>
+          <ellipse cx="150" cy="292" rx="48" ry="64" fill="#fff3df" stroke="none"/>
+          <ellipse cx="108" cy="356" rx="30" ry="16" fill="#fff3df"/><ellipse cx="192" cy="356" rx="30" ry="16" fill="#fff3df"/>
+          <path d="M78 236 q-36-24 -38-72" stroke="#3a2a20" stroke-width="34"/>
+          <path d="M78 236 q-36-24 -38-72" stroke="#f0a43c" stroke-width="26"/>
+          <circle cx="40" cy="160" r="19" fill="#fff3df"/>
+          <path d="M88 92 L74 20 L136 62z" fill="#f0a43c"/><path d="M212 92 L226 20 L164 62z" fill="#f0a43c"/>
+          <path d="M92 78 L86 40 L118 64z" fill="#f4b3a0" stroke="none"/><path d="M208 78 L214 40 L182 64z" fill="#f4b3a0" stroke="none"/>
+          <ellipse cx="150" cy="140" rx="84" ry="76" fill="#f0a43c"/>
+          <path d="M150 74 v22 M132 78 l4 18 M168 78 l-4 18" stroke="#b86a1e" stroke-width="5"/>
+          <ellipse cx="150" cy="168" rx="40" ry="28" fill="#fff3df" stroke="none"/>
+          <ellipse cx="118" cy="136" rx="9" ry="13" fill="#3a2a20"/><ellipse cx="182" cy="136" rx="9" ry="13" fill="#3a2a20"/>
+          <circle cx="121" cy="131" r="3.5" fill="#fff" stroke="none"/><circle cx="185" cy="131" r="3.5" fill="#fff" stroke="none"/>
+          <ellipse cx="96" cy="162" rx="13" ry="8" fill="#f4a08e" stroke="none"/><ellipse cx="204" cy="162" rx="13" ry="8" fill="#f4a08e" stroke="none"/>
+          <path d="M143 156 h14 l-7 9z" fill="#d9706a" stroke-width="3"/>
+          <path d="M150 165 v6 M150 171 q-10 10 -20 2 M150 171 q10 10 20 2" stroke-width="3.5"/>
+          <path d="M84 156 l-34-8 M84 166 l-36 4 M216 156 l34-8 M216 166 l36 4" stroke-width="3"/>
+          <path d="M82 208 q68 34 136 0 l8 28 q-76 36 -152 0z" fill="#e4261b"/>
+          <path d="M204 232 l8 74 l-38-6 l-4-52z" fill="#e4261b"/>
+          <path d="M200 262 h-30 M202 280 h-30" stroke="#fff" stroke-width="5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- weekday -->
+    <div class="week">
+      <div class="daytype" id="dayType"></div>
+      <div class="weekday" id="weekdayCN"></div>
+      <div class="lunar" id="lunarText"></div>
+    </div>
+
+    <!-- moon + forecast -->
+    <div class="boxA">
+      <div class="moon" id="moon"></div>
+      <div class="fc today" id="fc0"></div><div class="fc" id="fc1"></div><div class="fc" id="fc2"></div><div class="fc" id="fc3"></div>
+    </div>
+
+    <!-- today -->
+    <div class="boxB">
+      <div class="tempwrap"><span id="wxIcon"></span><span class="temp" id="temp"></span></div>
+      <div class="wxText" id="wxText"></div>
+      <svg class="art" width="200" height="100" viewBox="0 0 300 150" fill="none">
+        <path d="M0 150 L50 72 L82 100 L132 30 L192 110 L222 82 L300 150Z" fill="#d6defa" stroke="#2540a8" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M132 30 L148 52 L140 50 L132 62 L124 48 L116 52Z" fill="#fff" stroke="#2540a8" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M10 134q12-14 24 0t24 0t24 0t24 0t24 0t24 0t24 0t24 0t24 0t24 0" stroke="#2540a8" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      <div class="stamp">天氣</div>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+(function(){
+  const D = window.DATA, $ = id => document.getElementById(id);
+  const icon = k => `<svg viewBox="0 0 100 100"><use href="#i-${k}"/></svg>`;
+
+  $('monthCN').textContent = D.monthCN;
+  $('year').textContent = D.year;
+  $('ganzhi').textContent = D.ganzhiShort;
+  $('yi').innerHTML = D.yiLines.map(t => `<span>${t}</span>`).join('');
+  $('ji').innerHTML = D.jiLines.map(t => `<span>${t}</span>`).join('');
+  const day = $('day'); day.textContent = D.day; if (String(D.day).length < 2) day.classList.add('one');
+  $('dayType').textContent = D.dayType;
+  $('weekdayCN').textContent = D.weekdayCN;
+  $('lunarText').textContent = D.lunarText;
+
+  // moon phase from lunar day (1-30). Quantised into bold, readable shapes (a true 2-day crescent
+  // is only a sliver, too thin for e-ink). k: 1 = no lit area ... 0 = half ... -1 = full disc.
+  const d = D.lunarDayNum, r = 34, c = 40;
+  const k = (d===1||d===30)?1 : d<=6?0.35 : d<=9?0 : d<=14?-0.5 : d<=16?-1 : d<=21?-0.5 : d<=24?0 : 0.35;
+  const rx = Math.abs(k) * r;
+  const lit = k === 1 ? '' : `M${c} ${c-r}A${r} ${r} 0 0 1 ${c} ${c+r}A${rx} ${r} 0 0 ${k > 0 ? 0 : 1} ${c} ${c-r}Z`;
+  const flip = d >= 17 ? ' transform="translate(80 0) scale(-1 1)"' : '';
+  const names = d===1||d===30?'新月':d<=6?'眉月':d<=9?'上弦月':d<=14?'盈月':d<=16?'滿月':d<=21?'虧月':d<=24?'下弦月':'殘月';
+  $('moon').innerHTML =
+    `<svg viewBox="0 0 80 80" width="92" height="92"><circle cx="40" cy="40" r="34" fill="#fff" stroke="#2540a8" stroke-width="5"/><path d="${lit}" fill="#2540a8"${flip}/></svg><span>${names}</span>`;
+
+  D.forecast.forEach((f, i) => {
+    const range = (f[2] == null || f[3] == null) ? '—' : `${f[2]}–${f[3]}°`;
+    $('fc' + i).innerHTML = `<div class="d">${f[0]}</div>${icon(f[1])}<div class="t">${range}</div>`;
+  });
+  $('wxIcon').innerHTML = icon(D.wxIcon);
+  $('temp').textContent = (typeof D.weather.temp === 'number') ? D.weather.temp + "°C" : "—";
+  $('wxText').textContent = D.wxText;
+
+  if (D.mascotImg) $('mascot').innerHTML = `<img src="${D.mascotImg}" alt="">`;
+})();
+</script>
+</body>
+</html>

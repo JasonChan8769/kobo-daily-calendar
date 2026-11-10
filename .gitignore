@@ -1,0 +1,10 @@
+# generated / local-only files
+out/
+site/
+fonts/
+data.js
+__pycache__/
+*.raw.png
+
+# personal files that must never be published
+backup/

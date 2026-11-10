@@ -1,0 +1,7 @@
+# NickelMenu entries for the daily calendar.
+# install-kobo-addon.ps1 copies this to /mnt/onboard/.adds/nm/calendar on the Kobo.
+# "Update calendar": turn Wi-Fi on, then download today's image in the background.
+menu_item :main :Update calendar :nickel_wifi :enable
+chain_success :cmd_spawn :quiet:/bin/sh /mnt/onboard/.adds/calendar/update.sh
+# "Calendar status": shows the last lines of the update log.
+menu_item :main :Calendar status :cmd_output :1500:tail -n 4 /mnt/onboard/.adds/calendar/update.log

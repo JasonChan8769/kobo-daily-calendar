@@ -1,0 +1,53 @@
+name: Build daily calendar
+
+on:
+  schedule:
+    - cron: "10 21 * * *"   # 21:10 UTC = 05:10 Hong Kong time
+  workflow_dispatch:         # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: calendar
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python packages
+        run: pip install -r requirements.txt
+
+      - name: Download Noto Serif HK (SIL Open Font License)
+        run: |
+          mkdir -p fonts
+          curl -fsSL -o fonts/NotoSerifHK.ttf \
+            "https://raw.githubusercontent.com/google/fonts/main/ofl/notoserifhk/NotoSerifHK%5Bwght%5D.ttf"
+          ls -l fonts
+
+      - name: Install Chromium
+        run: python -m playwright install --with-deps chromium
+
+      - name: Build today's data (HKO weather, lunar calendar, holidays)
+        run: python build_data.py
+
+      - name: Render image
+        run: python render.py --out site/today.png
+
+      - name: Publish to the "output" branch (single commit, force-pushed)
+        run: |
+          cd site
+          git init -b output
+          git config user.name "calendar-bot"
+          git config user.email "calendar-bot@users.noreply.github.com"
+          git add today.png
+          git commit -m "calendar $(TZ=Asia/Hong_Kong date +%F)"
+          git push --force "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" output

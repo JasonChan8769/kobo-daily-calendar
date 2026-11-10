@@ -1,0 +1,5 @@
+lunar-python==1.4.9
+requests>=2.32
+opencc-python-reimplemented==0.1.7
+playwright>=1.48
+pillow>=10.4
