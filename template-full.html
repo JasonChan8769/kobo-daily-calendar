@@ -59,13 +59,12 @@
   }
   .month-sub { font-size: 22px; letter-spacing: 3px; text-align: right; }
 
-  /* Center Hero Stage */
   .hero-stage {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    padding: 12px 0;
+    padding: 10px 0;
   }
   .top-pill {
     background-color: #982B2B;
@@ -93,7 +92,7 @@
     padding: 20px 16px;
     letter-spacing: 6px;
     border: 4px double #E2E6DF;
-    height: 440px;
+    height: 430px;
     text-align: center;
   }
   .center-number-cat {
@@ -103,7 +102,7 @@
     flex: 1;
   }
   .big-num {
-    font-size: 430px;
+    font-size: 420px;
     font-weight: 900;
     color: #982B2B;
     line-height: 0.82;
@@ -111,10 +110,9 @@
   }
   .cat-cutout {
     max-height: 350px;
-    margin-left: -16px;
+    margin-left: -10px;
   }
 
-  /* Sub-Hero Bar */
   .sub-hero-bar {
     width: 100%;
     display: flex;
@@ -136,7 +134,6 @@
   .weekday-cn { font-size: 72px; font-weight: 900; color: #982B2B; letter-spacing: 10px; }
   .weekday-en { font-size: 24px; font-weight: 800; letter-spacing: 6px; }
 
-  /* Almanac Grid */
   .almanac-grid {
     display: grid;
     grid-template-columns: 190px 1fr 190px;
@@ -213,7 +210,6 @@
   }
   .pos-place { font-size: 26px; color: #982B2B; font-weight: 900; }
 
-  /* 12 Two-Hour Lucky Table */
   .hours-table {
     width: 100%;
     border-collapse: collapse;
@@ -238,10 +234,10 @@
     justify-content: space-between;
     align-items: center;
     padding-top: 6px;
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 900;
   }
-  .bottom-temp { font-size: 48px; color: #982B2B; }
+  .bottom-temp { font-size: 46px; color: #982B2B; }
 </style>
 </head>
 <body>
@@ -263,10 +259,10 @@
       <div class="hero-main">
         <div class="red-couplet" id="left-couplet">涼風起著返件褸</div>
         <div class="center-number-cat">
-          <div class="big-num" id="day-num">11</div>
+          <div class="big-num" id="day-num">14</div>
           <img class="cat-cutout" id="cat-img" src="assets/cat-wave.png" alt="cat" />
         </div>
-        <div class="red-couplet" id="right-couplet">週三撐過就週末</div>
+        <div class="red-couplet" id="right-couplet">放假休息瞓到唔願起</div>
       </div>
     </div>
 
@@ -275,4 +271,103 @@
         <div class="cartouche-title" id="solar-term">立冬</div>
         <div class="cartouche-sub" id="solar-sub">11月22日交小雪</div>
       </div>
-      <div class
+      <div class="weekday-center">
+        <div class="weekday-cn" id="dow-cn">星期六</div>
+        <div class="weekday-en" id="dow-en">SATURDAY</div>
+      </div>
+      <div class="side-cartouche">
+        <div class="cartouche-sub" id="lunar-month">農曆十月</div>
+        <div class="cartouche-title" id="lunar-day" style="color:#2B4C59;">初六</div>
+      </div>
+    </div>
+
+    <div class="almanac-grid">
+      <div class="yi-ji-box">
+        <div class="yj-header yj-yi">宜</div>
+        <div class="yj-body" id="yi-text">飲杯熱奶茶</div>
+      </div>
+      <div class="mid-table">
+        <div class="mid-row"><span class="row-tag">沖煞</span><span id="chong-sha">沖肖雞 · 煞西</span></div>
+        <div class="mid-row"><span class="row-tag">值日</span><span id="zhiri">滿日 · 執生為上</span></div>
+        <div class="mid-row"><span class="row-tag">運勢</span><div class="luck-grid" id="luck-list"></div></div>
+        <div class="mid-row"><span class="row-tag">方位</span><div class="pos-grid" id="pos-list"></div></div>
+        <div class="mid-row"><span class="row-tag">吉時</span><span id="lucky-hours">晨運 · 食宴 · 瞌眼</span></div>
+      </div>
+      <div class="yi-ji-box">
+        <div class="yj-header yj-ji">忌</div>
+        <div class="yj-body" id="ji-text">短袖出街</div>
+      </div>
+    </div>
+
+    <table class="hours-table" id="hours-table"></table>
+
+    <div class="bottom-strip">
+      <div class="bottom-temp" id="temp-str">24°C</div>
+      <div id="weather-desc">多雲 · 短暫有陽光</div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    const D = window.DATA || {};
+    if (D.year) document.getElementById('year-num').textContent = D.year;
+    if (D.ganzhi) document.getElementById('ganzhi-year').textContent = `${D.ganzhi}・${D.zodiac || ''}年`;
+    if (D.zodiac) document.getElementById('zodiac-char').textContent = D.zodiac;
+    if (D.monthCN) document.getElementById('month-cn').textContent = D.monthCN;
+    if (D.monthSize) document.getElementById('month-size').textContent = D.monthSize;
+    if (D.monthEN) document.getElementById('month-en').textContent = D.monthEN;
+
+    if (D.tagline) document.getElementById('season-banner').textContent = D.tagline;
+    if (D.coupletL) document.getElementById('left-couplet').textContent = D.coupletL;
+    if (D.coupletR) document.getElementById('right-couplet').textContent = D.coupletR;
+    if (D.day !== undefined) document.getElementById('day-num').textContent = D.day;
+    if (D.mascotImg) document.getElementById('cat-img').src = D.mascotImg;
+
+    if (D.solarTerm) {
+      document.getElementById('solar-term').textContent = D.solarTerm.name || '';
+      document.getElementById('solar-sub').textContent = D.solarTerm.note || '';
+    }
+    if (D.weekdayCN) document.getElementById('dow-cn').textContent = D.weekdayCN;
+    if (D.weekdayEN) document.getElementById('dow-en').textContent = D.weekdayEN;
+    if (D.lunar) {
+      document.getElementById('lunar-month').textContent = '農曆' + (D.lunar.month || '');
+      document.getElementById('lunar-day').textContent = D.lunar.day || '';
+    }
+
+    if (Array.isArray(D.yi)) document.getElementById('yi-text').textContent = D.yi.join(' ');
+    if (Array.isArray(D.ji)) document.getElementById('ji-text').textContent = D.ji.join(' ');
+    if (D.chong) document.getElementById('chong-sha').textContent = D.chong;
+    if (D.zhiri) document.getElementById('zhiri').textContent = D.zhiri;
+    if (D.luckyHours) document.getElementById('lucky-hours').textContent = D.luckyHours;
+
+    if (Array.isArray(D.luck)) {
+      document.getElementById('luck-list').innerHTML = D.luck.map(([k, stars]) =>
+        `<div>${k} ${'★'.repeat(stars)}${'☆'.repeat(5 - stars)}</div>`
+      ).join('');
+    }
+    if (Array.isArray(D.position)) {
+      document.getElementById('pos-list').innerHTML = D.position.map(([label, place]) =>
+        `<div><div>${label}</div><div class="pos-place">${place}</div></div>`
+      ).join('');
+    }
+    if (Array.isArray(D.hours)) {
+      const branches = D.hours.map(h => `<th>${h[0]}</th>`).join('');
+      const acts = D.hours.map(h => `<td>${h[1]}</td>`).join('');
+      const lucks = D.hours.map(h => `<td>${h[2] ? '<span class="ji-dot">吉</span>' : '凶'}</td>`).join('');
+      document.getElementById('hours-table').innerHTML = `
+        <tr><th>時辰</th>${branches}</tr>
+        <tr><td>宜忌</td>${acts}</tr>
+        <tr><td>吉凶</td>${lucks}</tr>
+      `;
+    }
+    if (D.weather) {
+      if (D.weather.temp !== undefined) document.getElementById('temp-str').textContent = D.weather.temp + '°C';
+      const parts = [];
+      if (D.weather.humidity) parts.push(`濕度 ${D.weather.humidity}%`);
+      if (D.weather.rain) parts.push(D.weather.rain);
+      if (D.weather.line) parts.push(D.weather.line);
+      document.getElementById('weather-desc').textContent = parts.join(' · ');
+    }
+  </script>
+</body>
+</html>
