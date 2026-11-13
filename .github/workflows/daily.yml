@@ -52,8 +52,8 @@ jobs:
       - name: Build today's data (HKO weather, lunar calendar, holidays)
         run: python build_data.py
 
-      - name: Render image
-        run: python render.py --out site/today.png
+      - - name: Render image
+          run: python render.py --template template-full.html --out site/today.png
 
       - name: Publish to the "output" branch (single commit, force-pushed)
         run: |
