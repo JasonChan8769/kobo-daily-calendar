@@ -2,8 +2,8 @@ name: Build daily calendar
 
 on:
   schedule:
-    - cron: "10 21 * * *"   # 21:10 UTC = 05:10 Hong Kong time
-  workflow_dispatch:         # lets you run it by hand from the Actions tab
+    - cron: "10 21 * * *"    # 21:10 UTC = 05:10 Hong Kong time
+  workflow_dispatch:           # lets you run it by hand from the Actions tab
 
 permissions:
   contents: write
@@ -51,10 +51,14 @@ jobs:
           git add today.png
           git commit -m "calendar $(TZ=Asia/Hong_Kong date +%F)"
           git push --force "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" output
-- name: Commit and push processed images
+
+      - name: Run process_cat.py to convert inbox images
+        run: python process_cat.py
+
+      - name: Commit and push processed images
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add assets/ inbox/
           git commit -m "Auto-process cat images" || echo "No changes to commit"
-          git push
+          git push "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
