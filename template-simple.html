@@ -3,290 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <style>
-  @font-face {
-    font-family: 'NotoSerifHK';
-    src: url('fonts/NotoSerifHK.ttf');
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    width: 1264px;
-    height: 1680px;
-    background-color: #EFECE6;
-    font-family: 'NotoSerifHK', 'Songti TC', 'PMingLiU', serif;
-    color: #1E3A5F;
-    padding: 44px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .outer-frame {
-    width: 100%;
-    height: 100%;
-    border: 6px solid #1E3A5F;
-    padding: 8px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .inner-frame {
-    width: 100%;
-    height: 100%;
-    border: 2px solid #1E3A5F;
-    padding: 32px 42px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-  }
-  .corner {
-    width: 34px; height: 34px;
-    border: 3px solid #9E2A2B;
-    position: absolute;
-  }
-  .tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
-  .tr { top: 12px; right: 12px; border-left: none; border-bottom: none; }
-  .bl { bottom: 12px; left: 12px; border-right: none; border-top: none; }
-  .br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
-
-  /* Header */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    border-bottom: 3px solid #1E3A5F;
-    padding-bottom: 16px;
-    font-weight: 800;
-  }
-  .header-month { font-size: 56px; color: #1E3A5F; }
-  .header-year { font-size: 68px; color: #9E2A2B; letter-spacing: 4px; }
-  .header-jp-dow { font-size: 52px; color: #1E3A5F; }
-
-  /* Main Hero Section */
-  .hero {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex: 1;
-    padding: 16px 0;
-    position: relative;
-  }
-  .almanac-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 116px;
-  }
-  .badge {
-    width: 78px; height: 78px;
-    border-radius: 12px;
-    color: #EFECE6;
-    font-size: 46px;
-    font-weight: 900;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 22px;
-    box-shadow: inset 0 0 0 3px #EFECE6;
-  }
-  .badge.yi { background-color: #9E2A2B; border: 3px solid #9E2A2B; }
-  .badge.ji { background-color: #1E3A5F; border: 3px solid #1E3A5F; }
-  .vertical-text {
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    font-size: 38px;
-    font-weight: 700;
-    letter-spacing: 5px;
-    line-height: 1.45;
-    max-height: 540px;
-  }
-
-  /* Center Big Day + Cat */
-  .center-stage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    position: relative;
-  }
-  .day-cat-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 600px;
-  }
-  .cat-hero {
-    max-height: 460px;
-    width: auto;
-    z-index: 2;
-    margin-right: -30px;
-  }
-  .big-day {
-    font-size: 520px;
-    font-weight: 900;
-    color: #9E2A2B;
-    line-height: 0.85;
-    z-index: 1;
-    letter-spacing: -12px;
-  }
-  .holiday-label {
-    font-size: 52px;
-    font-weight: 800;
-    color: #9E2A2B;
-    margin-top: 8px;
-  }
-  .weekday-cn {
-    font-size: 92px;
-    font-weight: 900;
-    color: #1E3A5F;
-    letter-spacing: 12px;
-    margin: 4px 0;
-  }
-  .lunar-date {
-    font-size: 42px;
-    font-weight: 700;
-    color: #1E3A5F;
-    letter-spacing: 6px;
-  }
-
-  /* 5-Day Forecast Strip */
-  .forecast-box {
-    border: 3px solid #9E2A2B;
-    border-radius: 16px;
-    padding: 18px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 22px;
-  }
-  .moon-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-right: 28px;
-    border-right: 2px solid #1E3A5F;
-    min-width: 145px;
-  }
-  .moon-icon {
-    width: 68px; height: 68px;
-    border-radius: 50%;
-    border: 3px solid #1E3A5F;
-    background: linear-gradient(90deg, #1E3A5F 50%, transparent 50%);
-    margin-bottom: 8px;
-  }
-  .moon-label { font-size: 28px; font-weight: 700; }
-  .forecast-days {
-    display: flex;
-    justify-content: space-around;
-    flex: 1;
-  }
-  .f-day {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 28px;
-    font-weight: 700;
-  }
-  .f-icon {
-    width: 54px;
-    height: 54px;
-    margin: 8px 0;
-  }
-  .f-temp { font-size: 26px; font-weight: 700; }
-
-  /* Bottom Weather Summary */
-  .weather-footer {
-    border-top: 3px solid #1E3A5F;
-    padding-top: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .weather-desc {
-    font-size: 34px;
-    font-weight: 700;
-    line-height: 1.4;
-    flex: 1;
-    padding: 0 24px;
-    white-space: pre-line;
-  }
-  .temp-now {
-    font-size: 54px;
-    font-weight: 900;
-    color: #9E2A2B;
-  }
-  .weather-stamp {
-    border: 3px solid #9E2A2B;
-    color: #9E2A2B;
-    font-size: 28px;
-    font-weight: 900;
-    padding: 6px 10px;
-    writing-mode: vertical-rl;
-  }
+@font-face { font-family: 'NotoSerifHK'; src: url('fonts/NotoSerifHK.ttf'); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { width: 1264px; height: 1680px; background: #EFECE6; font-family: 'NotoSerifHK', serif; color: #1E3A5F; padding: 44px; display: flex; }
+.outer-frame { width: 100%; height: 100%; border: 6px solid #1E3A5F; padding: 8px; display: flex; }
+.inner-frame { width: 100%; height: 100%; border: 2px solid #1E3A5F; padding: 32px 42px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+.corner { width: 34px; height: 34px; border: 3px solid #9E2A2B; position: absolute; }
+.tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; }
+.tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; }
+.bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; }
+.br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; }
+.header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 3px solid #1E3A5F; padding-bottom: 16px; font-weight: 800; }
+.header-month { font-size: 56px; }
+.header-year { font-size: 68px; color: #9E2A2B; letter-spacing: 4px; }
+.header-jp-dow { font-size: 52px; }
+.hero { display: flex; justify-content: space-between; align-items: center; flex: 1; padding: 16px 0; }
+.almanac-col { display: flex; flex-direction: column; align-items: center; width: 116px; }
+.badge { width: 78px; height: 78px; border-radius: 12px; color: #EFECE6; font-size: 46px; font-weight: 900; display: flex; justify-content: center; align-items: center; margin-bottom: 22px; box-shadow: inset 0 0 0 3px #EFECE6; }
+.badge.yi { background: #9E2A2B; border: 3px solid #9E2A2B; }
+.badge.ji { background: #1E3A5F; border: 3px solid #1E3A5F; }
+.vertical-text { writing-mode: vertical-rl; text-orientation: upright; font-size: 38px; font-weight: 700; letter-spacing: 5px; line-height: 1.45; max-height: 540px; }
+.center-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
+.day-cat-wrap { display: flex; align-items: center; justify-content: center; height: 600px; }
+.cat-hero { max-height: 460px; width: auto; z-index: 2; margin-right: -30px; }
+.big-day { font-size: 520px; font-weight: 900; color: #9E2A2B; line-height: 0.85; z-index: 1; letter-spacing: -12px; }
+.holiday-label { font-size: 52px; font-weight: 800; color: #9E2A2B; margin-top: 8px; }
+.weekday-cn { font-size: 92px; font-weight: 900; letter-spacing: 12px; margin: 4px 0; }
+.lunar-date { font-size: 42px; font-weight: 700; letter-spacing: 6px; }
+.forecast-box { border: 3px solid #9E2A2B; border-radius: 16px; padding: 18px 28px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+.moon-box { display: flex; flex-direction: column; align-items: center; padding-right: 28px; border-right: 2px solid #1E3A5F; min-width: 145px; }
+.moon-icon { width: 68px; height: 68px; border-radius: 50%; border: 3px solid #1E3A5F; background: linear-gradient(90deg, #1E3A5F 50%, transparent 50%); margin-bottom: 8px; }
+.moon-label { font-size: 28px; font-weight: 700; }
+.forecast-days { display: flex; justify-content: space-around; flex: 1; }
+.f-day { display: flex; flex-direction: column; align-items: center; font-size: 28px; font-weight: 700; }
+.f-icon { width: 54px; height: 54px; margin: 8px 0; }
+.f-temp { font-size: 26px; font-weight: 700; }
+.weather-footer { border-top: 3px solid #1E3A5F; padding-top: 18px; display: flex; align-items: center; justify-content: space-between; }
+.weather-desc { font-size: 34px; font-weight: 700; line-height: 1.4; flex: 1; padding: 0 24px; }
+.temp-now { font-size: 54px; font-weight: 900; color: #9E2A2B; }
+.weather-stamp { border: 3px solid #9E2A2B; color: #9E2A2B; font-size: 28px; font-weight: 900; padding: 6px 10px; writing-mode: vertical-rl; }
 </style>
 </head>
 <body>
-  <div class="outer-frame">
-    <div class="inner-frame">
-      <div class="corner tl"></div><div class="corner tr"></div>
-      <div class="corner bl"></div><div class="corner br"></div>
-
-      <div class="header">
-        <div class="header-month" id="month-cn">十一月</div>
-        <div class="header-year" id="year-num">2026</div>
-        <div class="header-jp-dow" id="dow-jp">日曜日</div>
-      </div>
-
-      <div class="hero">
-        <div class="almanac-col">
-          <div class="badge yi">宜</div>
-          <div class="vertical-text" id="yi-text">著返件褸</div>
-        </div>
-
-        <div class="center-stage">
-          <div class="day-cat-wrap">
-            <img class="cat-hero" id="cat-img" src="assets/cat-wave.png" alt="cat" />
-            <div class="big-day" id="day-num">11</div>
-          </div>
-          <div class="holiday-label" id="holiday-name">返工日</div>
-          <div class="weekday-cn" id="dow-cn">星期三</div>
-          <div class="lunar-date" id="lunar-str">十月初三</div>
-        </div>
-
-        <div class="almanac-col">
-          <div class="badge ji">忌</div>
-          <div class="vertical-text" id="ji-text">短袖出街</div>
-        </div>
-      </div>
-
-      <div class="forecast-box">
-        <div class="moon-box">
-          <div class="moon-icon" id="moon-graphic"></div>
-          <div class="moon-label" id="moon-phase">新月</div>
-        </div>
-        <div class="forecast-days" id="forecast-list"></div>
-      </div>
-
-      <div class="weather-footer">
-        <div class="temp-now" id="temp-str">24°C</div>
-        <div class="weather-desc" id="weather-desc">天氣漸涼</div>
-        <div class="weather-stamp">天氣</div>
-      </div>
+  <div class="outer-frame"><div class="inner-frame">
+    <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+    <div class="header">
+      <div class="header-month" id="month-cn">十一月</div>
+      <div class="header-year" id="year-num">2026</div>
+      <div class="header-jp-dow" id="dow-jp">土曜日</div>
     </div>
-  </div>
-
+    <div class="hero">
+      <div class="almanac-col"><div class="badge yi">宜</div><div class="vertical-text" id="yi-text">著返件褸</div></div>
+      <div class="center-stage">
+        <div class="day-cat-wrap">
+          <img class="cat-hero" id="cat-img" src="assets/cat-wave.png" alt="cat" />
+          <div class="big-day" id="day-num">14</div>
+        </div>
+        <div class="holiday-label" id="holiday-name">休息日</div>
+        <div class="weekday-cn" id="dow-cn">星期六</div>
+        <div class="lunar-date" id="lunar-str">十月初六</div>
+      </div>
+      <div class="almanac-col"><div class="badge ji">忌</div><div class="vertical-text" id="ji-text">短袖出街</div></div>
+    </div>
+    <div class="forecast-box">
+      <div class="moon-box"><div class="moon-icon"></div><div class="moon-label" id="moon-phase">蛾眉月</div></div>
+      <div class="forecast-days" id="forecast-list"></div>
+    </div>
+    <div class="weather-footer">
+      <div class="temp-now" id="temp-str">24°C</div>
+      <div class="weather-desc" id="weather-desc">漸轉多雲，短暫陽光</div>
+      <div class="weather-stamp">天氣</div>
+    </div>
+  </div></div>
   <script src="data.js"></script>
   <script>
-    const D = window.DATA || window.CALENDAR_DATA || {};
-
-    const JP_DOW = {
-      "星期日": "日曜日", "星期一": "月曜日", "星期二": "火曜日",
-      "星期三": "水曜日", "星期四": "木曜日", "星期五": "金曜日", "星期六": "土曜日"
+    const D = window.DATA || {};
+    const JP = {"星期日":"日曜日","星期一":"月曜日","星期二":"火曜日","星期三":"水曜日","星期四":"木曜日","星期五":"金曜日","星期六":"土曜日"};
+    const SVGS = {
+      sun: '<svg viewBox="0 0 64 64" fill="none" stroke="#1E3A5F" stroke-width="4"><circle cx="32" cy="32" r="14" fill="#1E3A5F"/><path d="M32 6v8M32 50v8M6 32h8M50 32h8M14 14l6 6M44 44l6 6M14 50l6-6M44 20l6-6"/></svg>',
+      partly: '<svg viewBox="0 0 64 64" fill="none" stroke="#1E3A5F" stroke-width="4"><circle cx="24" cy="24" r="10" fill="#9E2A2B" stroke="#9E2A2B"/><path d="M22 46h24a10 10 0 0 0 0-20 14 14 0 0 0-27-4 9 9 0 0 0 3 24z" fill="#EFECE6" stroke="#1E3A5F"/></svg>',
+      cloud: '<svg viewBox="0 0 64 64" fill="none" stroke="#1E3A5F" stroke-width="4"><path d="M18 46h28a11 11 0 0 0 0-22 15 15 0 0 0-29-4 10 10 0 0 0 1 26z" fill="#1E3A5F"/></svg>',
+      rain: '<svg viewBox="0 0 64 64" fill="none" stroke="#1E3A5F" stroke-width="4"><path d="M18 40h28a10 10 0 0 0 0-20 14 14 0 0 0-27-4 9 9 0 0 0-1 24z" fill="#1E3A5F"/><path d="M24 46l-4 10M34 46l-4 10M44 46l-4 10" stroke-linecap="round"/></svg>',
+      thunder: '<svg viewBox="0 0 64 64" fill="none" stroke="#1E3A5F" stroke-width="4"><path d="M18 38h28a10 10 0 0 0 0-20 14 14 0 0 0-27-4 9 9 0 0 0-1 24z" fill="#1E3A5F"/><path d="M34 40l-6 10h8l-4 10" stroke="#9E2A2B"/></svg>'
     };
-
-    const WX_SVGS = {
-      sun: `<svg viewBox="0 0 64 64" fill="none" stroke="#1E3A5F" stroke-width="4"><circle cx="32" cy="32" r="14" fill="#1E3A5F"/><path d="M32 6v8M32 50v8M6 32h8M50 32h8M14 14l6 6M44 44l6 6M14 50l6-6M44 20l6-6"/></svg>`,
-      partly: `<svg viewBox="0 0 64 64" fill="none" stroke="#1E3A5F" stroke-width="4"><circle cx="24" cy="24" r="10" fill="#9E2A2B" stroke="#9E2A2B"/><path d="M22 46h24a10 10 0 0 0 0-20 14 14 0 0 0-27-4 9 9 0 0 0 3 24z" fill="#EFECE6" stroke="#1E3A5F"/></svg>`,
-      cloud: `<svg viewBox="0 0 64 64" fill="none" stroke="#1E3A5F" stroke-width="4"><path d="M18
+    function moonName(n) {
+      if (!n) return "初月";
+      if (n <= 2 || n >= 29) return "新月";
+      if (n <= 6) return "蛾眉月";
+      if (n <= 9) return "上弦月";
+      if (n <= 14) return "盈凸月";
+      if (n <= 17) return "滿月";
+      if (n <= 21) return "虧凸月";
+      if (n <= 24) return "下弦月";
+      return "殘月";
+    }
+    if (D.monthCN) document.getElementById('month-cn').textContent = D.monthCN;
+    if (D.year) document.getElementById('year-num').textContent = D.year;
+    if (D.weekdayCN) {
+      document.getElementById('dow-cn').textContent = D.weekdayCN;
+      document.getElementById('dow-jp').textContent = JP[D.weekdayCN] || D.ganzhiShort || "";
+    }
+    if (D.day !== undefined) document.getElementById('day-num').textContent = D.day;
+    if (D.dayType) document.getElementById('holiday-name').textContent = D.dayType;
+    if (D.lunarText) document.getElementById('lunar-str').textContent = D.lunarText;
+    if (D.yiLines) document.getElementById('yi-text').textContent = D.yiLines.join('・');
+    if (D.jiLines) document.getElementById('ji-text').textContent = D.jiLines.join('・');
+    if (D.mascotImg) document.getElementById('cat-img').src = D.mascotImg;
+    document.getElementById('moon-phase').textContent = moonName(D.lunarDayNum);
+    if (D.weather && D.weather.temp !== undefined) document.getElementById('temp-str').textContent = D.weather.temp + '°C';
+    if (D.wxText) document.getElementById('weather-desc').textContent = D.wxText.replace(/\n/g, '，');
+    if (Array.isArray(D.forecast)) {
+      document.getElementById('forecast-list').innerHTML = D.forecast.map(r =>
+        `<div class="f-day"><div>${r[0]}</div><div class="f-icon">${SVGS[r[1]] || SVGS.partly}</div><div class="f-temp">${r[2]}-${r[3]}°</div></div>`
+      ).join('');
+    }
+  </script>
+</body>
+</html>
