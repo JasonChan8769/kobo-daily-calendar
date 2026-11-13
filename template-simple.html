@@ -14,7 +14,7 @@
     background-color: #EFECE6;
     font-family: 'NotoSerifHK', 'Songti TC', 'PMingLiU', serif;
     color: #1E3A5F;
-    padding: 48px;
+    padding: 44px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,16 +33,15 @@
     width: 100%;
     height: 100%;
     border: 2px solid #1E3A5F;
-    padding: 36px 44px;
+    padding: 32px 42px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
   }
-  /* Corner Fretwork Accents */
   .corner {
-    width: 36px; height: 36px;
-    border: 3px solid #A62B2B;
+    width: 34px; height: 34px;
+    border: 3px solid #9E2A2B;
     position: absolute;
   }
   .tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
@@ -56,11 +55,11 @@
     justify-content: space-between;
     align-items: baseline;
     border-bottom: 3px solid #1E3A5F;
-    padding-bottom: 18px;
-    font-weight: 700;
+    padding-bottom: 16px;
+    font-weight: 800;
   }
   .header-month { font-size: 56px; color: #1E3A5F; }
-  .header-year { font-size: 68px; color: #A62B2B; letter-spacing: 4px; }
+  .header-year { font-size: 68px; color: #9E2A2B; letter-spacing: 4px; }
   .header-jp-dow { font-size: 52px; color: #1E3A5F; }
 
   /* Main Hero Section */
@@ -69,17 +68,17 @@
     justify-content: space-between;
     align-items: center;
     flex: 1;
-    padding: 20px 0;
+    padding: 16px 0;
     position: relative;
   }
   .almanac-col {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 110px;
+    width: 116px;
   }
   .badge {
-    width: 76px; height: 76px;
+    width: 78px; height: 78px;
     border-radius: 12px;
     color: #EFECE6;
     font-size: 46px;
@@ -87,7 +86,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
     box-shadow: inset 0 0 0 3px #EFECE6;
   }
   .badge.yi { background-color: #9E2A2B; border: 3px solid #9E2A2B; }
@@ -95,13 +94,12 @@
   .vertical-text {
     writing-mode: vertical-rl;
     text-orientation: upright;
-    font-size: 40px;
+    font-size: 38px;
     font-weight: 700;
-    letter-spacing: 6px;
-    line-height: 1.4;
+    letter-spacing: 5px;
+    line-height: 1.45;
+    max-height: 540px;
   }
-  .yi-text { color: #1E3A5F; }
-  .ji-text { color: #1E3A5F; }
 
   /* Center Big Day + Cat */
   .center-stage {
@@ -117,29 +115,30 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    height: 620px;
+    height: 600px;
   }
   .cat-hero {
-    max-height: 480px;
+    max-height: 460px;
     width: auto;
     z-index: 2;
-    margin-right: -40px;
+    margin-right: -30px;
   }
   .big-day {
-    font-size: 560px;
+    font-size: 520px;
     font-weight: 900;
     color: #9E2A2B;
     line-height: 0.85;
     z-index: 1;
+    letter-spacing: -12px;
   }
   .holiday-label {
-    font-size: 54px;
+    font-size: 52px;
     font-weight: 800;
-    color: #9E2B2B;
-    margin-top: 10px;
+    color: #9E2A2B;
+    margin-top: 8px;
   }
   .weekday-cn {
-    font-size: 96px;
+    font-size: 92px;
     font-weight: 900;
     color: #1E3A5F;
     letter-spacing: 12px;
@@ -160,7 +159,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
   }
   .moon-box {
     display: flex;
@@ -168,15 +167,16 @@
     align-items: center;
     padding-right: 28px;
     border-right: 2px solid #1E3A5F;
+    min-width: 145px;
   }
   .moon-icon {
-    width: 72px; height: 72px;
+    width: 68px; height: 68px;
     border-radius: 50%;
     border: 3px solid #1E3A5F;
     background: linear-gradient(90deg, #1E3A5F 50%, transparent 50%);
     margin-bottom: 8px;
   }
-  .moon-label { font-size: 30px; font-weight: 700; }
+  .moon-label { font-size: 28px; font-weight: 700; }
   .forecast-days {
     display: flex;
     justify-content: space-around;
@@ -189,25 +189,31 @@
     font-size: 28px;
     font-weight: 700;
   }
-  .f-temp { font-size: 26px; margin-top: 8px; }
+  .f-icon {
+    width: 54px;
+    height: 54px;
+    margin: 8px 0;
+  }
+  .f-temp { font-size: 26px; font-weight: 700; }
 
   /* Bottom Weather Summary */
   .weather-footer {
     border-top: 3px solid #1E3A5F;
-    padding-top: 20px;
+    padding-top: 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
   .weather-desc {
-    font-size: 36px;
+    font-size: 34px;
     font-weight: 700;
     line-height: 1.4;
     flex: 1;
     padding: 0 24px;
+    white-space: pre-line;
   }
   .temp-now {
-    font-size: 48px;
+    font-size: 54px;
     font-weight: 900;
     color: #9E2A2B;
   }
@@ -236,36 +242,36 @@
       <div class="hero">
         <div class="almanac-col">
           <div class="badge yi">宜</div>
-          <div class="vertical-text yi-text" id="yi-text">週末東風和暖去飲</div>
+          <div class="vertical-text" id="yi-text">著返件褸</div>
         </div>
 
         <div class="center-stage">
           <div class="day-cat-wrap">
             <img class="cat-hero" id="cat-img" src="assets/cat-wave.png" alt="cat" />
-            <div class="big-day" id="day-num">1</div>
+            <div class="big-day" id="day-num">11</div>
           </div>
-          <div class="holiday-label" id="holiday-name">休日</div>
-          <div class="weekday-cn" id="dow-cn">星期日</div>
-          <div class="lunar-date" id="lunar-str">九月廿三</div>
+          <div class="holiday-label" id="holiday-name">返工日</div>
+          <div class="weekday-cn" id="dow-cn">星期三</div>
+          <div class="lunar-date" id="lunar-str">十月初三</div>
         </div>
 
         <div class="almanac-col">
           <div class="badge ji">忌</div>
-          <div class="vertical-text ji-text" id="ji-text">信霜降轉涼著定厚</div>
+          <div class="vertical-text" id="ji-text">短袖出街</div>
         </div>
       </div>
 
       <div class="forecast-box">
         <div class="moon-box">
-          <div class="moon-icon"></div>
-          <div class="moon-label" id="moon-phase">下弦月</div>
+          <div class="moon-icon" id="moon-graphic"></div>
+          <div class="moon-label" id="moon-phase">新月</div>
         </div>
         <div class="forecast-days" id="forecast-list"></div>
       </div>
 
       <div class="weather-footer">
-        <div class="temp-now" id="temp-str">28°C</div>
-        <div class="weather-desc" id="weather-desc">漸轉多雲，短暫陽光，東風清勁。</div>
+        <div class="temp-now" id="temp-str">24°C</div>
+        <div class="weather-desc" id="weather-desc">天氣漸涼</div>
         <div class="weather-stamp">天氣</div>
       </div>
     </div>
@@ -273,31 +279,14 @@
 
   <script src="data.js"></script>
   <script>
-    const D = window.CALENDAR_DATA || {};
-    if (D.month_cn) document.getElementById('month-cn').textContent = D.month_cn;
-    if (D.year) document.getElementById('year-num').textContent = D.year;
-    if (D.dow_jp) document.getElementById('dow-jp').textContent = D.dow_jp;
-    if (D.day) document.getElementById('day-num').textContent = D.day;
-    if (D.holiday || D.day_type) document.getElementById('holiday-name').textContent = D.holiday || D.day_type;
-    if (D.weekday_cn) document.getElementById('dow-cn').textContent = D.weekday_cn;
-    if (D.lunar) document.getElementById('lunar-str').textContent = D.lunar;
-    if (D.yi) document.getElementById('yi-text').textContent = Array.isArray(D.yi) ? D.yi.join('') : D.yi;
-    if (D.ji) document.getElementById('ji-text').textContent = Array.isArray(D.ji) ? D.ji.join('') : D.ji;
-    if (D.cat_image) document.getElementById('cat-img').src = D.cat_image;
-    if (D.temp) document.getElementById('temp-str').textContent = D.temp + '°C';
-    if (D.weather_desc) document.getElementById('weather-desc').textContent = D.weather_desc;
-    if (D.moon_phase) document.getElementById('moon-phase').textContent = D.moon_phase;
+    const D = window.DATA || window.CALENDAR_DATA || {};
 
-    const flist = document.getElementById('forecast-list');
-    if (Array.isArray(D.forecast) && D.forecast.length) {
-      flist.innerHTML = D.forecast.slice(0, 5).map(f => `
-        <div class="f-day">
-          <div>${f.dow || ''}</div>
-          <div style="font-size:38px;margin:6px 0;">${f.icon || '☀️'}</div>
-          <div class="f-temp">${f.min || ''}-${f.max || ''}°</div>
-        </div>
-      `).join('');
-    }
-  </script>
-</body>
-</html>
+    const JP_DOW = {
+      "星期日": "日曜日", "星期一": "月曜日", "星期二": "火曜日",
+      "星期三": "水曜日", "星期四": "木曜日", "星期五": "金曜日", "星期六": "土曜日"
+    };
+
+    const WX_SVGS = {
+      sun: `<svg viewBox="0 0 64 64" fill="none" stroke="#1E3A5F" stroke-width="4"><circle cx="32" cy="32" r="14" fill="#1E3A5F"/><path d="M32 6v8M32 50v8M6 32h8M50 32h8M14 14l6 6M44 44l6 6M14 50l6-6M44 20l6-6"/></svg>`,
+      partly: `<svg viewBox="0 0 64 64" fill="none" stroke="#1E3A5F" stroke-width="4"><circle cx="24" cy="24" r="10" fill="#9E2A2B" stroke="#9E2A2B"/><path d="M22 46h24a10 10 0 0 0 0-20 14 14 0 0 0-27-4 9 9 0 0 0 3 24z" fill="#EFECE6" stroke="#1E3A5F"/></svg>`,
+      cloud: `<svg viewBox="0 0 64 64" fill="none" stroke="#1E3A5F" stroke-width="4"><path d="M18
