@@ -2,8 +2,8 @@ name: Build daily calendar
 
 on:
   schedule:
-    - cron: "10 21 * * *"    # 21:10 UTC = 05:10 Hong Kong time
-  workflow_dispatch:           # lets you run it by hand from the Actions tab
+    - cron: "0 16 * * *"    # 16:00 UTC = 00:00 Hong Kong time (Midnight)
+  workflow_dispatch:        # lets you run it by hand from the Actions tab
 
 permissions:
   contents: write
@@ -27,22 +27,24 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Process cat images in inbox
-        run: python process_cat.py
+        run: |
+          if [ -f process_cat.py ]; then
+            python process_cat.py
+          fi
 
-      - name: Commit processed cat cutouts and previews to main
+      - name: Commit processed cat cutouts to main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add assets/ inbox/
+          git add assets/ inbox/ || true
           git commit -m "Auto-process cat images" || echo "No changes to commit"
-          git push
+          git push || true
 
-      - name: Download Noto Serif HK (SIL Open Font License)
+      - name: Download Noto Serif HK (Traditional Chinese Serif Font)
         run: |
           mkdir -p fonts
           curl -fsSL -o fonts/NotoSerifHK.ttf \
             "https://raw.githubusercontent.com/google/fonts/main/ofl/notoserifhk/NotoSerifHK%5Bwght%5D.ttf"
-          ls -l fonts
 
       - name: Install Chromium
         run: python -m playwright install --with-deps chromium
