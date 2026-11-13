@@ -54,7 +54,7 @@ jobs:
 
       - - name: Run process_cat.py to convert inbox images
         run: python process_cat.py
-        working-directory: kobo-daily-calendar-main  # (or change this to 'kobo' depending on your exact folder name)
+        working-directory: .
 
       - name: Commit and push processed images
         run: |
