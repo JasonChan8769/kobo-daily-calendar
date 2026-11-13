@@ -3,257 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <style>
-  @font-face {
-    font-family: 'NotoSerifHK';
-    src: url('fonts/NotoSerifHK.ttf');
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    width: 1264px;
-    height: 1680px;
-    background-color: #E2E6DF;
-    font-family: 'NotoSerifHK', 'Songti TC', 'PMingLiU', serif;
-    color: #2B4C59;
-    padding: 36px;
-  }
-  .page {
-    width: 100%;
-    height: 100%;
-    border: 6px solid #2B4C59;
-    padding: 22px 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-  }
-  .top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 4px double #2B4C59;
-    padding-bottom: 12px;
-  }
-  .year-block { font-size: 54px; font-weight: 900; color: #2B4C59; }
-  .year-sub { font-size: 24px; font-weight: 700; }
-  .zodiac-medallion {
-    width: 86px; height: 86px;
-    border-radius: 50%;
-    background-color: #982B2B;
-    color: #E2E6DF;
-    font-size: 46px;
-    font-weight: 900;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 4px solid #2B4C59;
-  }
-  .month-block { text-align: right; font-size: 52px; font-weight: 900; }
-  .month-size {
-    display: inline-block;
-    border: 3px solid #982B2B;
-    color: #982B2B;
-    font-size: 28px;
-    padding: 2px 8px;
-    margin-left: 8px;
-    vertical-align: middle;
-  }
-  .month-sub { font-size: 22px; letter-spacing: 3px; text-align: right; }
-
-  .hero-stage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    padding: 10px 0;
-  }
-  .top-pill {
-    background-color: #982B2B;
-    color: #E2E6DF;
-    padding: 6px 36px;
-    font-size: 30px;
-    font-weight: 700;
-    letter-spacing: 6px;
-    border: 2px solid #982B2B;
-  }
-  .hero-main {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 8px 0;
-  }
-  .red-couplet {
-    background-color: #982B2B;
-    color: #E2E6DF;
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    font-size: 40px;
-    font-weight: 800;
-    padding: 20px 16px;
-    letter-spacing: 6px;
-    border: 4px double #E2E6DF;
-    height: 430px;
-    text-align: center;
-  }
-  .center-number-cat {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    flex: 1;
-  }
-  .big-num {
-    font-size: 420px;
-    font-weight: 900;
-    color: #982B2B;
-    line-height: 0.82;
-    letter-spacing: -10px;
-  }
-  .cat-cutout {
-    max-height: 350px;
-    margin-left: -10px;
-  }
-
-  .sub-hero-bar {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 3px solid #2B4C59;
-    padding-bottom: 12px;
-  }
-  .side-cartouche {
-    border: 2px solid #2B4C59;
-    border-radius: 12px;
-    padding: 8px 24px;
-    text-align: center;
-    min-width: 250px;
-  }
-  .cartouche-title { font-size: 38px; font-weight: 900; color: #982B2B; }
-  .cartouche-sub { font-size: 20px; font-weight: 700; }
-  .weekday-center { text-align: center; }
-  .weekday-cn { font-size: 72px; font-weight: 900; color: #982B2B; letter-spacing: 10px; }
-  .weekday-en { font-size: 24px; font-weight: 800; letter-spacing: 6px; }
-
-  .almanac-grid {
-    display: grid;
-    grid-template-columns: 190px 1fr 190px;
-    gap: 14px;
-    margin: 10px 0;
-  }
-  .yi-ji-box {
-    border: 2px solid #2B4C59;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .yj-header {
-    width: 60px; height: 60px;
-    color: #E2E6DF;
-    font-size: 38px;
-    font-weight: 900;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 12px;
-  }
-  .yj-yi { background-color: #982B2B; }
-  .yj-ji { background-color: #3A5A60; }
-  .yj-body {
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 1.5;
-    letter-spacing: 3px;
-    max-height: 250px;
-  }
-  .mid-table {
-    border: 2px solid #2B4C59;
-    padding: 10px 18px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    font-size: 25px;
-    font-weight: 700;
-  }
-  .mid-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #2B4C59;
-    padding: 6px 0;
-  }
-  .mid-row:last-child { border-bottom: none; }
-  .row-tag {
-    background-color: #3A5A60;
-    color: #E2E6DF;
-    padding: 4px 10px;
-    font-size: 22px;
-    border-radius: 4px;
-    margin-right: 12px;
-    white-space: nowrap;
-  }
-  .luck-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px 16px;
-    flex: 1;
-    font-size: 22px;
-  }
-  .pos-grid {
-    display: flex;
-    justify-content: space-around;
-    flex: 1;
-    text-align: center;
-    font-size: 20px;
-  }
-  .pos-place { font-size: 26px; color: #982B2B; font-weight: 900; }
-
-  .hours-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-    font-size: 22px;
-    font-weight: 700;
-  }
-  .hours-table th, .hours-table td {
-    border: 2px solid #2B4C59;
-    padding: 5px 2px;
-  }
-  .ji-dot {
-    display: inline-block;
-    width: 30px; height: 30px;
-    line-height: 30px;
-    border-radius: 50%;
-    background-color: #982B2B;
-    color: #E2E6DF;
-  }
-  .bottom-strip {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 6px;
-    font-size: 28px;
-    font-weight: 900;
-  }
-  .bottom-temp { font-size: 46px; color: #982B2B; }
+@font-face { font-family: 'NotoSerifHK'; src: url('fonts/NotoSerifHK.ttf'); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { width: 1264px; height: 1680px; background: #E2E6DF; font-family: 'NotoSerifHK', serif; color: #2B4C59; padding: 36px; }
+.page { width: 100%; height: 100%; border: 6px solid #2B4C59; padding: 22px 30px; display: flex; flex-direction: column; justify-content: space-between; }
+.top-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px double #2B4C59; padding-bottom: 12px; }
+.year-block { font-size: 54px; font-weight: 900; }
+.year-sub { font-size: 24px; font-weight: 700; }
+.zodiac-medallion { width: 86px; height: 86px; border-radius: 50%; background: #982B2B; color: #E2E6DF; font-size: 46px; font-weight: 900; display: flex; align-items: center; justify-content: center; border: 4px solid #2B4C59; }
+.month-block { text-align: right; font-size: 52px; font-weight: 900; }
+.month-size { display: inline-block; border: 3px solid #982B2B; color: #982B2B; font-size: 28px; padding: 2px 8px; margin-left: 8px; vertical-align: middle; }
+.month-sub { font-size: 22px; letter-spacing: 3px; text-align: right; }
+.hero-stage { display: flex; flex-direction: column; align-items: center; padding: 10px 0; }
+.top-pill { background: #982B2B; color: #E2E6DF; padding: 6px 36px; font-size: 30px; font-weight: 700; letter-spacing: 6px; }
+.hero-main { width: 100%; display: flex; justify-content: space-between; align-items: center; margin: 8px 0; }
+.red-couplet { background: #982B2B; color: #E2E6DF; writing-mode: vertical-rl; text-orientation: upright; font-size: 40px; font-weight: 800; padding: 20px 16px; letter-spacing: 6px; border: 4px double #E2E6DF; height: 430px; text-align: center; }
+.center-number-cat { display: flex; align-items: flex-end; justify-content: center; flex: 1; }
+.big-num { font-size: 420px; font-weight: 900; color: #982B2B; line-height: 0.82; letter-spacing: -10px; }
+.cat-cutout { max-height: 350px; margin-left: -10px; }
+.sub-hero-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #2B4C59; padding-bottom: 12px; }
+.side-cartouche { border: 2px solid #2B4C59; border-radius: 12px; padding: 8px 24px; text-align: center; min-width: 250px; }
+.cartouche-title { font-size: 38px; font-weight: 900; color: #982B2B; }
+.cartouche-sub { font-size: 20px; font-weight: 700; }
+.weekday-center { text-align: center; }
+.weekday-cn { font-size: 72px; font-weight: 900; color: #982B2B; letter-spacing: 10px; }
+.weekday-en { font-size: 24px; font-weight: 800; letter-spacing: 6px; }
+.almanac-grid { display: grid; grid-template-columns: 190px 1fr 190px; gap: 14px; margin: 10px 0; }
+.yi-ji-box { border: 2px solid #2B4C59; padding: 14px; display: flex; flex-direction: column; align-items: center; }
+.yj-header { width: 60px; height: 60px; color: #E2E6DF; font-size: 38px; font-weight: 900; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+.yj-yi { background: #982B2B; }
+.yj-ji { background: #3A5A60; }
+.yj-body { writing-mode: vertical-rl; text-orientation: upright; font-size: 28px; font-weight: 700; line-height: 1.5; letter-spacing: 3px; max-height: 250px; }
+.mid-table { border: 2px solid #2B4C59; padding: 10px 18px; display: flex; flex-direction: column; justify-content: space-around; font-size: 25px; font-weight: 700; }
+.mid-row { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #2B4C59; padding: 6px 0; }
+.mid-row:last-child { border-bottom: 0; }
+.row-tag { background: #3A5A60; color: #E2E6DF; padding: 4px 10px; font-size: 22px; border-radius: 4px; margin-right: 12px; }
+.luck-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; flex: 1; font-size: 22px; }
+.pos-grid { display: flex; justify-content: space-around; flex: 1; text-align: center; font-size: 20px; }
+.pos-place { font-size: 26px; color: #982B2B; font-weight: 900; }
+.hours-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 22px; font-weight: 700; }
+.hours-table th, .hours-table td { border: 2px solid #2B4C59; padding: 5px 2px; }
+.ji-dot { display: inline-block; width: 30px; height: 30px; line-height: 30px; border-radius: 50%; background: #982B2B; color: #E2E6DF; }
+.bottom-strip { display: flex; justify-content: space-between; align-items: center; padding-top: 6px; font-size: 28px; font-weight: 900; }
+.bottom-temp { font-size: 46px; color: #982B2B; }
 </style>
 </head>
 <body>
   <div class="page">
     <div class="top-bar">
-      <div>
-        <div class="year-block" id="year-num">2026</div>
-        <div class="year-sub" id="ganzhi-year">丙午年・馬年</div>
-      </div>
+      <div><div class="year-block" id="year-num">2026</div><div class="year-sub" id="ganzhi-year">丙午年・馬年</div></div>
       <div class="zodiac-medallion" id="zodiac-char">馬</div>
-      <div>
-        <div class="month-block"><span id="month-cn">十一月</span><span class="month-size" id="month-size">小</span></div>
-        <div class="month-sub" id="month-en">NOVEMBER</div>
-      </div>
+      <div><div class="month-block"><span id="month-cn">十一月</span><span class="month-size" id="month-size">小</span></div><div class="month-sub" id="month-en">NOVEMBER</div></div>
     </div>
-
     <div class="hero-stage">
       <div class="top-pill" id="season-banner">涼 風 起 · 著 返 件 褸</div>
       <div class="hero-main">
@@ -265,27 +66,13 @@
         <div class="red-couplet" id="right-couplet">放假休息瞓到唔願起</div>
       </div>
     </div>
-
     <div class="sub-hero-bar">
-      <div class="side-cartouche">
-        <div class="cartouche-title" id="solar-term">立冬</div>
-        <div class="cartouche-sub" id="solar-sub">11月22日交小雪</div>
-      </div>
-      <div class="weekday-center">
-        <div class="weekday-cn" id="dow-cn">星期六</div>
-        <div class="weekday-en" id="dow-en">SATURDAY</div>
-      </div>
-      <div class="side-cartouche">
-        <div class="cartouche-sub" id="lunar-month">農曆十月</div>
-        <div class="cartouche-title" id="lunar-day" style="color:#2B4C59;">初六</div>
-      </div>
+      <div class="side-cartouche"><div class="cartouche-title" id="solar-term">立冬</div><div class="cartouche-sub" id="solar-sub">11月22日交小雪</div></div>
+      <div class="weekday-center"><div class="weekday-cn" id="dow-cn">星期六</div><div class="weekday-en" id="dow-en">SATURDAY</div></div>
+      <div class="side-cartouche"><div class="cartouche-sub" id="lunar-month">農曆十月</div><div class="cartouche-title" id="lunar-day" style="color:#2B4C59;">初六</div></div>
     </div>
-
     <div class="almanac-grid">
-      <div class="yi-ji-box">
-        <div class="yj-header yj-yi">宜</div>
-        <div class="yj-body" id="yi-text">飲杯熱奶茶</div>
-      </div>
+      <div class="yi-ji-box"><div class="yj-header yj-yi">宜</div><div class="yj-body" id="yi-text">飲杯熱奶茶</div></div>
       <div class="mid-table">
         <div class="mid-row"><span class="row-tag">沖煞</span><span id="chong-sha">沖肖雞 · 煞西</span></div>
         <div class="mid-row"><span class="row-tag">值日</span><span id="zhiri">滿日 · 執生為上</span></div>
@@ -293,20 +80,11 @@
         <div class="mid-row"><span class="row-tag">方位</span><div class="pos-grid" id="pos-list"></div></div>
         <div class="mid-row"><span class="row-tag">吉時</span><span id="lucky-hours">晨運 · 食宴 · 瞌眼</span></div>
       </div>
-      <div class="yi-ji-box">
-        <div class="yj-header yj-ji">忌</div>
-        <div class="yj-body" id="ji-text">短袖出街</div>
-      </div>
+      <div class="yi-ji-box"><div class="yj-header yj-ji">忌</div><div class="yj-body" id="ji-text">短袖出街</div></div>
     </div>
-
     <table class="hours-table" id="hours-table"></table>
-
-    <div class="bottom-strip">
-      <div class="bottom-temp" id="temp-str">24°C</div>
-      <div id="weather-desc">多雲 · 短暫有陽光</div>
-    </div>
+    <div class="bottom-strip"><div class="bottom-temp" id="temp-str">24°C</div><div id="weather-desc">多雲 · 短暫有陽光</div></div>
   </div>
-
   <script src="data.js"></script>
   <script>
     const D = window.DATA || {};
@@ -316,13 +94,11 @@
     if (D.monthCN) document.getElementById('month-cn').textContent = D.monthCN;
     if (D.monthSize) document.getElementById('month-size').textContent = D.monthSize;
     if (D.monthEN) document.getElementById('month-en').textContent = D.monthEN;
-
     if (D.tagline) document.getElementById('season-banner').textContent = D.tagline;
     if (D.coupletL) document.getElementById('left-couplet').textContent = D.coupletL;
     if (D.coupletR) document.getElementById('right-couplet').textContent = D.coupletR;
     if (D.day !== undefined) document.getElementById('day-num').textContent = D.day;
     if (D.mascotImg) document.getElementById('cat-img').src = D.mascotImg;
-
     if (D.solarTerm) {
       document.getElementById('solar-term').textContent = D.solarTerm.name || '';
       document.getElementById('solar-sub').textContent = D.solarTerm.note || '';
@@ -333,40 +109,30 @@
       document.getElementById('lunar-month').textContent = '農曆' + (D.lunar.month || '');
       document.getElementById('lunar-day').textContent = D.lunar.day || '';
     }
-
     if (Array.isArray(D.yi)) document.getElementById('yi-text').textContent = D.yi.join(' ');
     if (Array.isArray(D.ji)) document.getElementById('ji-text').textContent = D.ji.join(' ');
     if (D.chong) document.getElementById('chong-sha').textContent = D.chong;
     if (D.zhiri) document.getElementById('zhiri').textContent = D.zhiri;
     if (D.luckyHours) document.getElementById('lucky-hours').textContent = D.luckyHours;
-
     if (Array.isArray(D.luck)) {
-      document.getElementById('luck-list').innerHTML = D.luck.map(([k, stars]) =>
-        `<div>${k} ${'★'.repeat(stars)}${'☆'.repeat(5 - stars)}</div>`
-      ).join('');
+      document.getElementById('luck-list').innerHTML = D.luck.map(([k, s]) => `<div>${k} ${'★'.repeat(s)}${'☆'.repeat(5 - s)}</div>`).join('');
     }
     if (Array.isArray(D.position)) {
-      document.getElementById('pos-list').innerHTML = D.position.map(([label, place]) =>
-        `<div><div>${label}</div><div class="pos-place">${place}</div></div>`
-      ).join('');
+      document.getElementById('pos-list').innerHTML = D.position.map(([l, p]) => `<div><div>${l}</div><div class="pos-place">${p}</div></div>`).join('');
     }
     if (Array.isArray(D.hours)) {
-      const branches = D.hours.map(h => `<th>${h[0]}</th>`).join('');
-      const acts = D.hours.map(h => `<td>${h[1]}</td>`).join('');
-      const lucks = D.hours.map(h => `<td>${h[2] ? '<span class="ji-dot">吉</span>' : '凶'}</td>`).join('');
-      document.getElementById('hours-table').innerHTML = `
-        <tr><th>時辰</th>${branches}</tr>
-        <tr><td>宜忌</td>${acts}</tr>
-        <tr><td>吉凶</td>${lucks}</tr>
-      `;
+      const b = D.hours.map(h => `<th>${h[0]}</th>`).join('');
+      const a = D.hours.map(h => `<td>${h[1]}</td>`).join('');
+      const l = D.hours.map(h => `<td>${h[2] ? '<span class="ji-dot">吉</span>' : '凶'}</td>`).join('');
+      document.getElementById('hours-table').innerHTML = `<tr><th>時辰</th>${b}</tr><tr><td>宜忌</td>${a}</tr><tr><td>吉凶</td>${l}</tr>`;
     }
     if (D.weather) {
       if (D.weather.temp !== undefined) document.getElementById('temp-str').textContent = D.weather.temp + '°C';
-      const parts = [];
-      if (D.weather.humidity) parts.push(`濕度 ${D.weather.humidity}%`);
-      if (D.weather.rain) parts.push(D.weather.rain);
-      if (D.weather.line) parts.push(D.weather.line);
-      document.getElementById('weather-desc').textContent = parts.join(' · ');
+      const pts = [];
+      if (D.weather.humidity) pts.push(`濕度 ${D.weather.humidity}%`);
+      if (D.weather.rain) pts.push(D.weather.rain);
+      if (D.weather.line) pts.push(D.weather.line);
+      document.getElementById('weather-desc').textContent = pts.join(' · ');
     }
   </script>
 </body>
